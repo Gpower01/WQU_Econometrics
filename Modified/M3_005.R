@@ -369,6 +369,10 @@ print(Gld_nov_diff)
 Gld_Oct_avg <- mean(Oct_Gld_Prices)
 print(Gld_Oct_avg)
 
+# GLD November average 
+Gld_Nov_avg <- mean(Nov_Gld_Prices)
+print(Gld_Nov_avg)
+
 # 7.2 STD for GLD ETF Returns for October and November 
 # Log Returns for GLD October prices
 gldlog_oct <- diff(log(Oct_Gld_Prices))
