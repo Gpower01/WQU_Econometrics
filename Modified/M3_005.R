@@ -295,10 +295,14 @@ adf.test(Nov_Gld_Prices)
 # 6.1 ARMA model for GLD ETF prices for October 
 Gld_oct_prices <- arima(Oct_Gld_Prices, order = c(1,0,0))
 summary(Gld_oct_prices)
-                        
+
+Box.test(Gld_oct_prices$residuals, lag = 1)                        
+
 # 6.2 ARMA model for GLD ETF prices for November 
 Gld_nov_prices <- arima(Nov_Gld_Prices, order = c(1, 0,0))
 summary(Gld_nov_prices)
+
+Box.test(Gld_nov_prices$residuals, lag = 1)
 
 # ACF and PACF for UKOG Equity ETF October & November 
 acf(Oct_Ukog_prices)
@@ -314,6 +318,8 @@ adf.test(Nov_Ukog_prices)
 # 6.3 ARMA model for UKOG ETF Prices for October 
 UKog_oct_prices <- arima(Oct_Ukog_prices, order = c(1,0,0))
 summary(UKog_oct_prices)
+
+Box.test(UKog_oct_prices$residuals, lag = 1)
 
 # 6.4 ARMA model for UKOG ETF prices for November 
 UKog_nov_prices <- arima(Nov_Ukog_prices, order = c(1,0,0))
@@ -338,4 +344,76 @@ Box.test(UKog_nov_prices$residuals, lag = 1)
 # ACF test indicates UKOG October prices autocorrelation of about 0.5 that rapidly decayed.
 
 # 7.0 Modelling Volatility 
+# 7.1 GLD ETF Daily high minus low for October
+Gld_Oct_high <- max(Oct_Gld_Prices)
+print(Gld_Oct_high)
+Gld_Oct_low <- min(Oct_Gld_Prices)
+print(Gld_Oct_low)
 
+# October Dialy high minus low 
+Gld_oct_diff <- Gld_Oct_high - Gld_Oct_low
+print(Gld_oct_diff)
+
+# GLD ETF Daily high minus low for November
+Gld_nov_high <- max(Nov_Gld_Prices)
+print(Gld_nov_high)
+
+Gld_nov_low <- min(Nov_Gld_Prices)
+print(Gld_nov_low)
+
+# November Daily high minus low
+Gld_nov_diff <- Gld_nov_high - Gld_nov_low
+print(Gld_nov_diff)
+
+# GLD October average 
+Gld_Oct_avg <- mean(Oct_Gld_Prices)
+print(Gld_Oct_avg)
+
+# 7.1 UKOG ETF Daily high minus low for October 
+UKog_oct_high <- max(Oct_Ukog_prices)
+print(UKog_oct_high)
+
+Ukog_oct_low <- min(Oct_Ukog_prices)
+print(Ukog_oct_low)
+
+# October UKOG Daily High minus Low 
+UKog_oct_diff <- UKog_oct_high - Ukog_oct_low
+print(UKog_oct_diff)
+
+#Daily average October UKOG prices 
+Ukog_oct_avg <- mean(Oct_Ukog_prices)
+print(Ukog_oct_avg)
+
+# November UKOG Daily high minus low
+Ukog_nov_high <- max(Nov_Ukog_prices )
+print(Ukog_nov_high)
+
+Ukog_nov_low <- min(Nov_Ukog_prices )
+print(Ukog_nov_low)
+
+# Daily high minus  low UKOG Nov prices
+Ukog_nov_diff <- Ukog_nov_high - Ukog_nov_low
+print(Ukog_nov_diff)
+
+# Daily average November UKOG prices
+Ukog_nov_avg <- mean(Nov_Ukog_prices )
+print(Ukog_nov_avg)
+
+# 7.2 STD for GLD ETF Returns for October and November 
+# Log Returns for GLD October prices
+gldlog_oct <- diff(log(Oct_Gld_Prices))
+gldlog2_oct <- gldlog_oct[-1]
+print(gldlog2_oct)
+
+# Log Returns for GLD November prices 
+gldlog_nov <- diff(log(Nov_Gld_Prices))
+gldlog2_nov <- gldlog_nov[-1]
+print(gldlog2_nov)
+
+# STD for GLD October and November log returns 
+gld_oct_sd = sd(gldlog2_oct)
+print(gld_oct_sd)
+gld_nov_sd = sd(gldlog2_nov)
+print(gld_nov_sd)
+
+# 7.3 GARCH (1,1) model October GLD Return
