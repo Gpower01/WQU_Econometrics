@@ -434,4 +434,44 @@ print(Ukog_nov_diff)
 Ukog_nov_avg <- mean(Nov_Ukog_prices )
 print(Ukog_nov_avg)
 
-# 7.6 STD for UKOG ETF Returns for October and November 
+# 7.6 returns and STD for UKOG ETF October and November Prices 
+# log returns for UKOG ETF October prices 
+ukoglog_oct <- diff( log(Oct_Ukog_prices) )
+print(ukoglog_oct)
+#ukoglog2 = na.omit(ukoglog )
+ukoglog2_oct = ukoglog_oct[-1]
+print(ukoglog2_oct)
+
+# log returns for UKOG ETF November prices 
+ukoglog_nov <- diff( log(Nov_Ukog_prices ) )
+print(ukoglog_nov)
+#ukoglog2 = na.omit(ukoglog )
+ukoglog2_nov = ukoglog_nov[-1]
+print(ukoglog2_nov)
+
+# STD for UKOG October and November log returns 
+ukog_oct_sd = sd(ukoglog2_oct)
+print(ukog_oct_sd)
+ukog_nov_sd = sd(ukoglog2_nov)
+print(ukog_nov_sd)
+
+# 7.7  Volatility GARCH (1,1) model for October UKOG.L Return
+ukog_gurch <- ugarchspec(mean.model = list(armaOrder = c(0,0)),
+                        variance.model = list(model = "sGARCH"),
+                        distribution.model = 'norm')
+
+gurcg_ukog1 <- ugarchfit(spec =ukog_gurch , data = ukoglog2_oct)
+print(gurcg_ukog1)
+
+# Volatility GARCH model for November GLD Return
+gurcg_ukog2 <- ugarchfit(spec =ukog_gurch, data = ukoglog2_nov)
+print(gurcg_ukog2)
+
+# 7.8 What are the significant changes? if any 
+# The UKOG GARCH model for October prices indicated a mean value of 0.001098 and
+# p-value of 0.86797 (suggesting that is not is not statistically significant) while 
+# the GARCH model for November prices indicated a much better model with a mean value 
+# of -0.005280 and p-value of 0.25379.
+
+# 8.0 Correlation 
+
