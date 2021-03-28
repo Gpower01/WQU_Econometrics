@@ -369,7 +369,42 @@ print(Gld_nov_diff)
 Gld_Oct_avg <- mean(Oct_Gld_Prices)
 print(Gld_Oct_avg)
 
-# 7.1 UKOG ETF Daily high minus low for October 
+# 7.2 STD for GLD ETF Returns for October and November 
+# Log Returns for GLD October prices
+gldlog_oct <- diff(log(Oct_Gld_Prices))
+gldlog2_oct <- gldlog_oct[-1]
+print(gldlog2_oct)
+
+# Log Returns for GLD November prices 
+gldlog_nov <- diff(log(Nov_Gld_Prices))
+gldlog2_nov <- gldlog_nov[-1]
+print(gldlog2_nov)
+
+# STD for GLD October and November log returns 
+gld_oct_sd = sd(gldlog2_oct)
+print(gld_oct_sd)
+gld_nov_sd = sd(gldlog2_nov)
+print(gld_nov_sd)
+
+# 7.3 Volatility GARCH (1,1) model for October GLD Return
+library(rugarch)
+gld_gurch <- ugarchspec(mean.model = list(armaOrder = c(0,0)),
+                        variance.model = list(model = "sGARCH"),
+                        distribution.model = 'norm')
+
+gurcg_gld1 <- ugarchfit(spec =gld_gurch, data = gldlog2_oct)
+print(gurcg_gld1)
+
+# Volatility GARCH model for November GLD Return
+gurcg_gld2 <- ugarchfit(spec =gld_gurch, data = gldlog2_nov)
+print(gurcg_gld2)
+
+# 7.4 What are the significant changes? if any
+# GLD ETF GARCH model for October prices indicated a mean value of 0.000407
+# and a p-value of 0.737075 while the GLD ETF GARCH model for November prices 
+# indicated a negative mean value of -0.001188 and a smaller p-value of 0.386699.
+
+# 7.5 UKOG Daily prices high minus low for October and November, average 
 UKog_oct_high <- max(Oct_Ukog_prices)
 print(UKog_oct_high)
 
@@ -399,21 +434,4 @@ print(Ukog_nov_diff)
 Ukog_nov_avg <- mean(Nov_Ukog_prices )
 print(Ukog_nov_avg)
 
-# 7.2 STD for GLD ETF Returns for October and November 
-# Log Returns for GLD October prices
-gldlog_oct <- diff(log(Oct_Gld_Prices))
-gldlog2_oct <- gldlog_oct[-1]
-print(gldlog2_oct)
-
-# Log Returns for GLD November prices 
-gldlog_nov <- diff(log(Nov_Gld_Prices))
-gldlog2_nov <- gldlog_nov[-1]
-print(gldlog2_nov)
-
-# STD for GLD October and November log returns 
-gld_oct_sd = sd(gldlog2_oct)
-print(gld_oct_sd)
-gld_nov_sd = sd(gldlog2_nov)
-print(gld_nov_sd)
-
-# 7.3 GARCH (1,1) model October GLD Return
+# 7.6 STD for UKOG ETF Returns for October and November 
