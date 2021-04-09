@@ -1,3 +1,6 @@
+install.packages("XML")
+install.packages("YieldCurve")
+
 library(quantmod) 
 # 1.1 Obtain Treasury yield data
 t2yr = getSymbols(Symbols = "DGS2", src = "FRED", auto.assign = FALSE)
@@ -67,37 +70,37 @@ plot(ukoglog2)
 
 # 3.1 calculate benchmark security average yield for Oct and Nov
 
-#t2yr = na.omit( t2yr )
+t2yr = na.omit( t2yr )
 t2yravr1 = mean( t2yr$DGS2["2019-10"] )
 t2yravr1
 t2yravr2 = mean( t2yr$DGS2["2019-11"] )
 t2yravr2
 
-#t3yr = na.omit( t3yr )
+t3yr = na.omit( t3yr )
 t3yravr1 = mean( t3yr$DGS3["2019-10"] )
 t3yravr1
 t3yravr2 = mean( t3yr$DGS3["2019-11"] )
 t3yravr2
 
-#t5yr = na.omit( t5yr )
+t5yr = na.omit( t5yr )
 t5yravr1 = mean( t5yr$DGS5["2019-10"] )
 t5yravr1
 t5yravr2 = mean( t5yr$DGS5["2019-11"] )
 t5yravr2
 
-#t7yr = na.omit( t7yr )
+t7yr = na.omit( t7yr )
 t7yravr1 = mean( t7yr$DGS7["2019-10"] )
 t7yravr1
 t7yravr2 = mean( t7yr$DGS7["2019-11"] )
 t7yravr2
 
-#t10yr = na.omit( t10yr )
+t10yr = na.omit( t10yr )
 t10yravr1 = mean( t10yr$DGS10["2019-10"] )
 t10yravr1
 t10yravr2 = mean( t10yr$DGS10["2019-11"] )
 t10yravr2
 
-#t30yr = na.omit( t30yr )
+t30yr = na.omit( t30yr )
 t30yravr1 = mean( t30yr$DGS30["2019-10"] )
 t30yravr1
 t30yravr2 = mean( t30yr$DGS30["2019-11"] )
@@ -119,31 +122,37 @@ ukogavr2
 
 # 3.4 std of benchmark security std for Oct and Nov
 
+t2yr = na.omit( t2yr )
 t2yrsd1 = sd( t2yr$DGS2["2019-10"] )
 t2yrsd1
 t2yrsd2 = sd( t2yr$DGS2["2019-11"] )
 t2yrsd2
 
+t3yr = na.omit( t3yr )
 t3yrsd1 = sd( t3yr$DGS3["2019-10"] )
 t3yrsd1
 t3yrsd2 = sd( t3yr$DGS3["2019-11"] )
 t3yrsd2
 
+t5yr = na.omit( t5yr )
 t5yrsd1 = sd( t5yr$DGS5["2019-10"] )
 t5yrsd1
 t5yrsd2 = sd( t5yr$DGS5["2019-11"] )
 t5yrsd2
 
+t7yr = na.omit( t7yr )
 t7yrsd1 = sd( t7yr$DGS7["2019-10"] )
 t7yrsd1
 t7yrsd2 = sd( t7yr$DGS7["2019-11"] )
 t7yrsd2
 
+t10yr = na.omit( t10yr )
 t10yrsd1 = sd( t10yr$DGS10["2019-10"] )
 t10yrsd1
 t10yrsd2 = sd( t10yr$DGS10["2019-11"] )
 t10yrsd2
 
+t30yr = na.omit( t30yr )
 t30yrsd1 = sd( t30yr$DGS30["2019-10"] )
 t30yrsd1
 t30yrsd2 = sd( t30yr$DGS30["2019-11"] )
@@ -189,8 +198,6 @@ legend("topright",legend=c("GLDF","UKOG.L ETF"),
 # Equation : https://en.wikipedia.org/wiki/Fixed-income_attribution
 # Equation : y_t(τ) = β_{0t} + β_{1t} \frac{1-\exp(-λ τ)}{λ τ} + β_{2t} ≤ft(\frac{1-\exp(-λ τ)}{λ τ} - \exp(-λ τ) \right)
 
-install.packages("XML")
-install.packages("YieldCurve")
 
 library(xts)
 library(zoo)
@@ -409,6 +416,10 @@ print(gurcg_gld2)
 # indicated a negative mean value of -0.001188 and a smaller p-value of 0.386699.
 
 # 7.5 UKOG Daily prices high minus low for October and November, average 
+
+plot(Oct_Ukog_prices)
+plot(Nov_Ukog_prices)
+
 UKog_oct_high <- max(Oct_Ukog_prices)
 print(UKog_oct_high)
 
@@ -440,11 +451,13 @@ print(Ukog_nov_avg)
 
 # 7.6 returns and STD for UKOG ETF October and November Prices 
 # log returns for UKOG ETF October prices 
+
 ukoglog_oct <- diff( log(Oct_Ukog_prices) )
 print(ukoglog_oct)
 #ukoglog2 = na.omit(ukoglog )
 ukoglog2_oct = ukoglog_oct[-1]
 print(ukoglog2_oct)
+plot(ukoglog2_oct)
 
 # log returns for UKOG ETF November prices 
 ukoglog_nov <- diff( log(Nov_Ukog_prices ) )
@@ -452,6 +465,7 @@ print(ukoglog_nov)
 #ukoglog2 = na.omit(ukoglog )
 ukoglog2_nov = ukoglog_nov[-1]
 print(ukoglog2_nov)
+plot(ukoglog2_nov)
 
 # STD for UKOG October and November log returns 
 ukog_oct_sd = sd(ukoglog2_oct)
@@ -461,8 +475,8 @@ print(ukog_nov_sd)
 
 # 7.7  Volatility GARCH (1,1) model for October UKOG.L Return
 ukog_gurch <- ugarchspec(mean.model = list(armaOrder = c(0,0)),
-                        variance.model = list(model = "sGARCH"),
-                        distribution.model = 'norm')
+                         variance.model = list(model = "sGARCH"),
+                         distribution.model = 'norm')
 
 gurcg_ukog1 <- ugarchfit(spec =ukog_gurch , data = ukoglog2_oct)
 print(gurcg_ukog1)
@@ -479,3 +493,28 @@ print(gurcg_ukog2)
 
 # 8.0 Correlation 
 
+library(quantmod) 
+# 8.1 compute pearson correlation between gold and equity
+getSymbols(Symbols = "GLD", from = "2019-09-30", to = "2019-11-30" , src = "yahoo")
+GLD$GLD.Close
+plot( x = index( GLD ), y = GLD$GLD.Close )
+getSymbols(Symbols = "UKOG.L", from = "2019-09-30", to = "2019-11-30" , src = "yahoo")
+UKOG.L$UKOG.L.Close
+plot( x = index( UKOG.L ), y = UKOG.L$UKOG.L.Close )
+
+gld_oct = GLD["2019-10"]
+gld_oct
+length( gld_oct$GLD.Close )
+ukog_oct = UKOG.L["2019-10"]
+length( ukog_oct$UKOG.L.Close )
+cor.test(gld_oct$GLD.Close, ukog_oct$UKOG.L.Close, method=c("pearson"))
+
+
+gld_nov = GLD["2019-11"]
+gld_nov$GLD.Close
+length( gld_nov$GLD.Close )
+ukog_nov = UKOG.L["2019-11"]
+ukog_nov$UKOG.L.Close
+length( ukog_nov$UKOG.L.Close )
+length(ukog_nov[-20,]$UKOG.L.Close)
+cor.test(gld_nov$GLD.Close, ukog_nov[-20,]$UKOG.L.Close, method=c("pearson"))
