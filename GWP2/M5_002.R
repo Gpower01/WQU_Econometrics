@@ -75,5 +75,32 @@ btclog2_rt = na.omit(btclog_rt)
 btclog2_rt
 plot(btclog2_rt)
 
-# 3.0 Data Summaries 
-# 3.1 compute a 20-day moving average price for Gold ETF for April 2020
+# 3.0 Data Summaries | Compute a 20-day moving average 
+# 3.1 To compute a 20-day moving average price for Gold ETF for April 2020 including data from March 
+getSymbols(Symbols = "GLD", from = "2020-03-01", to = "2020-12-31" , src = "yahoo")
+Aprl_Dec_GldMA <- GLD$GLD.Close 
+# 3.1 Compute Gold ETF 20-days Moving average (n=20)
+Gld_MA <- SMA(Aprl_Dec_GldMA, n = 20)
+plot(Gld_MA, col="red")
+summary(Gld_MA)
+
+# 3.2 compute a 20-day moving average for UKOG Equity ETF for April-December 2020
+getSymbols(Symbols = "UKOG.L", from = "2020-03-01", to = "2020-12-31" , src = "yahoo")
+Aprl_Dec_UkogMA <- UKOG.L$UKOG.L.Close
+# 3.2 Compute UKOG Equity ETF 20-days Moving average (n=20) 
+Ukog_MA <- SMA(Aprl_Dec_UkogMA, n=20)
+plot(Ukog_MA, col="blue")
+summary(Ukog_MA)
+
+# 3.3 compute a 20-day moving average for Bitcoin for April - December 2020
+getSymbols(Symbols = 'BTC-USD', from = "2020-03-01", to = "2020-12-31" , src = "yahoo")
+Aprl_Dec_BTCMA <- (`BTC-USD`)[,4]
+# process 'na' values 
+Aprl_Dec_BTCMAvg <- na.omit(Aprl_Dec_BTCMA)
+# 3.3 Compute BTC 20-day (n=20) moving average for April - December 2020
+BTC_MA <- SMA(Aprl_Dec_BTCMAvg, n=20)
+plot(BTC_MA, col="green")
+summary(BTC_MA)
+
+# 4.0 Graphing 
+
