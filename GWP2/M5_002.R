@@ -1,7 +1,7 @@
 # Comparing 3 asset classes during COVID
 # Selecting a GOLD ETF, Equity EFT outside the USA and Bitcoin
 
-
+# report link : https://docs.google.com/document/d/1U5_aZBpiOx3qCA2H3IGWQXwUGqvHetw1ipaOwsXzB1E/edit?usp=sharing
 
 # load package 
 library(quantmod) 
