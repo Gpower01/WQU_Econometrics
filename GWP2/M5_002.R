@@ -1,7 +1,7 @@
 # Comparing 3 asset classes during COVID
 # Selecting a GOLD ETF, Equity EFT outside the USA and Bitcoin
 
-# report link : https://docs.google.com/document/d/1U5_aZBpiOx3qCA2H3IGWQXwUGqvHetw1ipaOwsXzB1E/edit?usp=sharing
+
 
 # load package 
 library(quantmod) 
@@ -420,6 +420,67 @@ print(gurcg_gldq4)
 summary(gurcg_gldq4)
 
 # 5.4 What are the 3 long-term variances indicated by the models.
+
+# 6.1 Pick 1 of the 3 quarters in 2020 (Q2, Q3, or Q4).  Test your gold ETF for stationarity.  Explicitly state which test you used to determine stationarity
+# pick Q2
+# acf pacf test
+getSymbols(Symbols = "GLD", from = "2020-04-01", to = "2020-06-30" , src = "yahoo")
+plot( x = index( GLD ), y = GLD$GLD.Close, type="l", xlab="Time", ylab="Closing price ($)", main="GOLD ETF price")
+GldQ2 = GLD$GLD.Close
+GldQ2 <- na.omit( GldQ2 )
+
+acf( GldQ2 )
+pacf( GldQ2 )
+
+# Ljung-Box test
+lag.length = 25
+Box.test( GldQ2, lag=lag.length, type="Ljung-Box")
+
+# Augmented Dickey–Fuller (ADF) t-statistic test for unit root
+library(tseries)
+adf.test( GldQ2 )
+
+
+# 6.2 Using the same quarter, test your equity ETF for stationarity.  Explicitly state which test you used to determine stationarity
+# acf pacf test
+getSymbols(Symbols = "UKOG.L", from = "2020-04-01", to = "2020-06-30" , src = "yahoo")
+plot( x = index( UKOG.L ), y = UKOG.L$UKOG.L.Close, type="l", xlab="Time", ylab="Closing price ($)", main="UKOG.L ETF price")
+UkogQ2 = UKOG.L$UKOG.L.Close
+UkogQ2 <- na.omit( UkogQ2 )
+
+acf( UkogQ2 )
+pacf( UkogQ2 )
+
+# Ljung-Box test
+lag.length = 25
+Box.test( UkogQ2, lag=lag.length, type="Ljung-Box")
+
+# Augmented Dickey–Fuller (ADF) t-statistic test for unit root
+library(tseries)
+adf.test( UkogQ2 )
+
+# 6.3 Using the same quarter, test Bitcoin for stationarity.  Explicitly state which test you used to determine stationarity
+# acf pacf test
+getSymbols(Symbols = "BTC-USD", from = "2020-04-01", to = "2020-06-30" , src = "yahoo")
+`BTC-USD`<- na.omit( `BTC-USD` )
+plot( x = index( `BTC-USD` ), y = `BTC-USD`$`BTC-USD.Close`, type="l", xlab="Time", ylab="Closing price ($)", main="bitcoin price")
+bitQ2 = `BTC-USD`$`BTC-USD.Close`
+bitQ2 <- na.omit( bitQ2 )
+
+acf( bitQ2 , lag.max = length( bitQ2 ) )
+pacf( bitQ2 )
+
+# Ljung-Box test
+lag.length = 25
+Box.test( bitQ2, lag=lag.length, type="Ljung-Box")
+
+# Augmented Dickey–Fuller (ADF) t-statistic test for unit root
+library(tseries)
+adf.test( bitQ2 )
+
+
+
+
 
 
 
