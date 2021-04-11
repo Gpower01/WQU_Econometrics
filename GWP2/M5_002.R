@@ -1,6 +1,11 @@
 # Comparing 3 asset classes during COVID
 # Selecting a GOLD ETF, Equity EFT outside the USA and Bitcoin
 
+install.packages("egcm")
+install.packages("urca")
+install.packages("tsDyn")
+install.packages("data.table")
+
 # load package 
 library(quantmod) 
 library(ggplot2)
@@ -155,7 +160,7 @@ legend("topleft",legend=c("bitcoin","MA 5 days","MA 20 days","MA 60 days"),
 # bit coin :        so many,     ~9,     ~7
 # it is meaningless to check the intersection of the 5 days moving average.
 # we can see several intersections in the 20 and 60 days moving averages.
-  
+
 # 4.3 Graph gold and equity prices on the same plot.  Use a separate scale for each series, and be sure to add a label and legend
 getSymbols(Symbols = "GLD", from = "2020-01-01", to = "2020-12-31" , src = "yahoo")
 plot( x = index( GLD ), y = GLD$GLD.Close, type = "l", col = "black", xlab = "Time", ylab = "GLD ETF price" )
@@ -500,6 +505,7 @@ bitQ2 = `BTC-USD`$`BTC-USD.Close`
 bitQ2 <- na.omit( bitQ2 )
 
 #  7.2 Cointegration analysis of all 3 combinations using Engle-Granger | Checking if there any cointegrating vectors 
+
 library(egcm)
 library(urca)
 library(tsDyn)
@@ -612,4 +618,23 @@ plot(Q3_Ukog_BTC_cointegrate)
 # 7.5 Thus, there is no cointegration vectors observed and we will perform Johansen test for cointegration 
 
 # 7.7 Johansen test for cointegration 
+getSymbols(Symbols = "GLD", from = "2020-04-01", to = "2020-06-30" , src = "yahoo")
+getSymbols(Symbols = "UKOG.L", from = "2020-04-01", to = "2020-06-30" , src = "yahoo")
+getSymbols(Symbols = "BTC-USD", from = "2020-04-01", to = "2020-06-30" , src = "yahoo")
+
+cb = cbind( GLD$GLD.Close, UKOG.L$UKOG.L.Close, `BTC-USD`$`BTC-USD.Close` )
+cb = na.omit( cb )
+cb
+jotest=ca.jo( cb, type="trace", K=2, ecdet="none", spec="longrun")
+summary(jotest)
+
+getSymbols(Symbols = "GLD", from = "2020-07-01", to = "2020-09-30" , src = "yahoo")
+getSymbols(Symbols = "UKOG.L", from = "2020-07-01", to = "2020-09-30" , src = "yahoo")
+getSymbols(Symbols = "BTC-USD", from = "2020-07-01", to = "2020-09-30" , src = "yahoo")
+
+cb = cbind( GLD$GLD.Close, UKOG.L$UKOG.L.Close, `BTC-USD`$`BTC-USD.Close` )
+cb = na.omit( cb )
+cb
+jotest=ca.jo( cb, type="trace", K=2, ecdet="none", spec="longrun")
+summary(jotest)
 
