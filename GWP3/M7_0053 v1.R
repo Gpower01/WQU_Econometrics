@@ -18,6 +18,7 @@ install.packages("VineCopula")
 install.packages("copula")
 install.packages("PerformanceAnalytics")
 install.packages('xts')
+install.packages('DEoptim')
 
 # load package 
 library(quantmod) 
@@ -35,6 +36,7 @@ library(VineCopula)
 library(copula)
 library(PerformanceAnalytics)
 library(xts)
+library(DEoptim)
 
 
 # 1.0 Data Importing 
@@ -506,5 +508,31 @@ charts.PerformanceSummary(UkogQ2_trade_return)
 
 #Summary 
 summary(as.ts(UkogQ2_trade_return))
+
+# Interpretations | Comments
+# It was observed that cumulative returns are positive at the end of the UKOG Q2 period, implying that the strategy
+# is profitatble. However, there are periods when the cumulative returns were negative.
+# Therefore this strategy should be evaluated with the Q3 series.
+
+# maxDrwdown
+maxDrawdown(UkogQ2_trade_return)
+
+# Calculating Daily and annualized standard deviations
+StdDev(UkogQ2_trade_return)
+
+StdDev.annualized(UkogQ2_trade_return)
+
+# Calculating Value at Risk (VaR)
+VaR(UkogQ2_trade_return, p=0.95)
+
+# Calculating the Sharpe ratio on daily and annualized basis
+SharpeRatio(as.ts(UkogQ2_trade_return), Rf=0, p=0.95, FUN = "StdDev")
+
+SharpeRatio.annualized(UkogQ2_trade_return, Rf=0)
+
+# Next, Evaluating Trading Strategy Performance Using UKOG Q3 data series
+
+
+
 
 
